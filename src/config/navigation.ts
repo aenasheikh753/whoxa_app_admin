@@ -61,7 +61,6 @@ import BlockListh from "/Images/BlockListh.png";
 import AvatarList1 from "/Images/empty-wallet.png";
 import AvatarList2 from "/Images/empty-walletd.png";
 import Settings1 from "/Images/setttingrrrr.png";
-import Settings2 from "/Images/settings2.png";
 import cms1 from "/Images/cms121.png";
 import cms2 from "/Images/cms2.png";
 import cmsh from "/Images/cmsh.png";

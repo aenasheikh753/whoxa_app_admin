@@ -19,7 +19,7 @@ const useApiPost = () => {
         ...(token && { Authorization: `Bearer ${token}` }),
       };
 
-      const apiUrl =  "http://62.72.36.245:3047/api/"
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3047"
 
 
       const response = await axios.post(`${apiUrl}${url}`, bodyData, { headers });

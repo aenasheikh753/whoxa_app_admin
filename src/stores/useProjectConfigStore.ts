@@ -28,8 +28,23 @@ const store: StateCreator<Store> = (set) => ({
       const response = await projectService.getProjectConfig();
       console.log('Fetched project configuration:', response);
       
-      if (!response.data) {
-        throw new Error('No configuration data found in response');
+      // Backend returns: { status: true, data: config, message: "...", toast: false }
+      // projectService.getProjectConfig() returns ProjectConfiguration type
+      // So response.data contains the actual config data
+      if (!response) {
+        throw new Error('No response received from server');
+      }
+      
+      // Check if response has data property and it's not empty/null
+      if (!response.data || (typeof response.data === 'object' && Object.keys(response.data).length === 0)) {
+        console.warn('Config data is empty or null, waiting for backend to initialize...');
+        // Don't throw error, just set loading to false - config will be created by backend
+        set({ 
+          config: null, 
+          isLoading: false,
+          error: 'Configuration not initialized. Please wait for backend to create initial config.'
+        });
+        return;
       }
       
       set({ 
@@ -44,7 +59,10 @@ const store: StateCreator<Store> = (set) => ({
         error: error instanceof Error ? error.message : 'Failed to load configuration', 
         isLoading: false 
       });
-      toast.error('Failed to load configuration');
+      // Only show toast if it's a real error, not just empty config
+      if (error instanceof Error && !error.message.includes('not initialized')) {
+        toast.error('Failed to load configuration');
+      }
     }
   },
   

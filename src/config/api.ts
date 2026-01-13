@@ -65,7 +65,10 @@ export const API_CONFIG = {
 export const buildApiUrl = (endpoint: string): string => {
   // Remove leading/trailing slashes for consistency
   const cleanEndpoint = endpoint.replace(/^\/+|\/+$/g, "");
-  return `${API_CONFIG.BASE_URL}/api/${cleanEndpoint}`;
+  // Backend routes don't have /api prefix, so use BASE_URL directly
+  const baseUrl = API_CONFIG.BASE_URL || '';
+  if (!baseUrl) return `/${cleanEndpoint}`;
+  return `${baseUrl}/${cleanEndpoint}`;
 };
 
 // Default query function for React Query

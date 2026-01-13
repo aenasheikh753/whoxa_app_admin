@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+// import { StrictMode } from 'react'; // Uncomment if needed
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
@@ -46,9 +46,7 @@ if (!root) {
 
 // Render the app
 root.render(
-  // <StrictMode>
-  <BrowserRouter >
-  // <BrowserRouter basename="/admin">
+  <BrowserRouter>
     <ToastProvider>
       <ErrorBoundary
         fallback={ErrorFallback}
@@ -68,8 +66,5 @@ root.render(
         </QueryClientProvider>
       </ErrorBoundary>
     </ToastProvider>
-
   </BrowserRouter>
-
-  // </StrictMode>
 );
