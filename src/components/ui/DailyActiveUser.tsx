@@ -98,7 +98,7 @@ const ActiveUser: React.FC = () => {
                                             key={month.value}
                                             value={month.value}
                                             className={({ active }) =>
-                                                `cursor-pointer select-none relative py-1 px-2 ${active ? "bg-table-row-hover text-primary" : "text-table-header-text"}`
+                                                `cursor-pointer select-none relative py-1 px-2 ${active ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400" : "text-table-header-text"}`
                                             }
                                         >
                                             {({ selected }) => (
@@ -107,7 +107,7 @@ const ActiveUser: React.FC = () => {
                                                         {month.name}
                                                     </span>
                                                     {selected ? (
-                                                        <span className="absolute inset-y-0 right-2 flex items-center text-primary">
+                                                        <span className="absolute inset-y-0 right-2 flex items-center text-blue-600 dark:text-blue-400">
                                                             <CheckIcon className="h-4 w-4" />
                                                         </span>
                                                     ) : null}
@@ -139,7 +139,7 @@ const ActiveUser: React.FC = () => {
                                             key={year}
                                             value={year}
                                             className={({ active }) =>
-                                                `cursor-pointer select-none relative py-1 px-2 ${active ? "bg-table-row-hover text-primary" : "text-table-header-text"}`
+                                                `cursor-pointer select-none relative py-1 px-2 ${active ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400" : "text-table-header-text"}`
                                             }
                                         >
                                             {({ selected }) => (
@@ -148,7 +148,7 @@ const ActiveUser: React.FC = () => {
                                                         {year}
                                                     </span>
                                                     {selected ? (
-                                                        <span className="absolute inset-y-0 right-2 flex items-center text-primary">
+                                                        <span className="absolute inset-y-0 right-2 flex items-center text-blue-600 dark:text-blue-400">
                                                             <CheckIcon className="h-4 w-4" />
                                                         </span>
                                                     ) : null}
@@ -166,7 +166,7 @@ const ActiveUser: React.FC = () => {
 
             {isLoading ? (
                 <div className="flex items-center justify-center" style={{ height: 300 }}>
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
                 </div>
             ) : error ? (
                 <div className="flex items-center justify-center text-red-500" style={{ height: 300 }}>{error}</div>

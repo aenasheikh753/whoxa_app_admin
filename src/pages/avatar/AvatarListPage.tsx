@@ -102,11 +102,10 @@ export default function AvatarList({ refreshTrigger }: AvatarListProps) {
       } else {
         throw new Error(response.message || 'Failed to delete avatar');
       }
-    } catch (error) {
-      console.error('Error deleting avatar:', error);
+    } catch (error: any) {
       toast({
         title: 'Error',
-        description: 'Failed to delete avatar. Please try again.',
+        description: error?.response?.data?.message || error?.message || 'Failed to delete avatar. Please try again.',
         variant: 'error'
       });
     } finally {

@@ -1,5 +1,3 @@
-'use client';
-
 import { ThemeExample } from '@/components/examples/ThemeExample';
 
 export default function ThemeTestPage() {

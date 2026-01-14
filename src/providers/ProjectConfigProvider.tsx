@@ -43,7 +43,7 @@ export const ProjectConfigProvider = ({ children }: { children: ReactNode }) => 
     const primary =
       getConfigValue<string>("app_primary_color") ||
       // getConfigValue<string>("primary") ||
-      "#fdc604"; // fallback to your default
+      "#2563eb"; // fallback to ConvoX blue default
 
     const secondary =
       getConfigValue<string>("app_secondary_color") ||

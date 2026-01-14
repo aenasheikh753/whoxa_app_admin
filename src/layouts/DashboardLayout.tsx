@@ -14,7 +14,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { ROUTES, getPageTitle } from '@/config/routes';
 // import { useMediaQuery } from '@/hooks/use-media-query';
 import { Button } from '@/components/ui/Button';
-import { Plus, AlertCircle, Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, AlertCircle, Loader2 } from 'lucide-react';
 
 interface DashboardLayoutProps {
   children?: ReactNode;
@@ -92,35 +92,6 @@ export function DashboardLayout({ children, className }: DashboardLayoutProps) {
 
   return (
     <div className={cn('flex h-screen bg-secondary', className)}>
-      {/* Floating Toggle Button - Hidden on mobile */}
-      {!isMobile && (
-        <button
-          onClick={handleToggleSidebar}
-          className={cn(
-            'fixed top-4   cursor-pointer bg-text-muted/55 shadow-lg',
-            ' ',
-            'transition-all duration-200 ',
-            'flex items-center justify-center h-6 w-6', // Keep original dimensions
-            'transform translate-x-0', // Remove negative translation
-            'overflow-visible',
-            // Adjust padding to position chevron
-            sidebarCollapsed ? 'md:left-16' : 'md:left-64' // Adjust based on sidebar width
-          )}
-          style={{
-            left: sidebarCollapsed ? '64px' : '256px', // Half of sidebar width - half of button width
-          }}
-          aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        >
-         <div className=' z-50'>
-           {sidebarCollapsed ? (
-            <ChevronRight className="h-5 w-5 text-text-muted" />
-          ) : (
-            <ChevronLeft className="h-5 w-5 text-text-muted" />
-          )}
-         </div>
-        </button>
-      )}
-
       {/* Mobile sidebar backdrop */}
       {isMobile && sidebarOpen && (
         <div
@@ -187,6 +158,8 @@ export function DashboardLayout({ children, className }: DashboardLayoutProps) {
           variant=""
           showMobileMenu={isMobile}
           sidebarOpen={sidebarOpen}
+          sidebarCollapsed={sidebarCollapsed}
+          onSidebarToggle={handleToggleSidebar}
         />
 
         <main className="flex-1 overflow-y-auto focus:outline-none p-4 md:p-6">

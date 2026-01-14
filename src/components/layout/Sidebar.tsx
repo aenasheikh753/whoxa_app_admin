@@ -7,7 +7,44 @@ import { ChevronRight } from 'lucide-react';
 import { useProjectConfigStore } from '@/stores/useProjectConfigStore';
 import { Modal } from '@/components/ui/Modal';
 import { useThemeStore } from '@/store/theme/themeStore';
-import logo from "/assets/logo.png";
+import faviconLogo from "/assets/faviconn.png";
+import expandedSidebarLogo from "/assets/expanded-sidebar.png";
+
+// Logo component with fallback
+const LogoWithFallback = ({ 
+  src, 
+  alt, 
+  className, 
+  collapsed = false 
+}: { 
+  src?: string | null; 
+  alt: string; 
+  className?: string;
+  collapsed?: boolean;
+}) => {
+  const [imgError, setImgError] = useState(false);
+
+  if (imgError || !src) {
+    return (
+      <span className={cn(
+        "text-blue-600 dark:text-blue-400 font-bold",
+        collapsed ? "text-xl" : "text-2xl",
+        className
+      )}>
+        {collapsed ? "CX" : "ConvoX"}
+      </span>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={className}
+      onError={() => setImgError(true)}
+    />
+  );
+};
 
 interface NavItemState extends Omit<NavItem, 'children'> {
   isOpen: boolean;
@@ -151,8 +188,8 @@ const Sidebar = ({ className, collapsed = false, onCollapse }: SidebarProps) => 
                     'flex items-center justify-center',
                     'focus:outline-none',
                     hasActiveChild(child)
-                      ? 'bg-secondary-light text-primary-dark'
-                      : 'text-text-muted hover:bg-secondary-light ',
+                      ? 'bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-500'
+                      : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800',
                   )}
                   title={child.title}
                 >
@@ -173,20 +210,20 @@ const Sidebar = ({ className, collapsed = false, onCollapse }: SidebarProps) => 
             onClick={(e) => handleItemClick(e, item, path)}
             style={{ border: 'none', outline: 'none', boxShadow: 'none' }}
             className={cn(
-              'w-full flex items-center px-3 py-2 rounded-md text-sm, font-extrabold transition-colors',
-              'focus:outline-none focus:ring-1 focus:ring-primary-500',
+              'w-full flex items-center px-3 py-2 rounded-md text-sm font-extrabold transition-colors',
+              'focus:outline-none focus:ring-1 focus:ring-blue-500',
               shouldHighlight
-                ? ' text-primary-dark font-semibold'
-                : 'text-table-header-text hover:text-primary-dark',
+                ? 'text-blue-600 dark:text-blue-500 font-semibold'
+                : 'text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400',
               !collapsed ? 'justify-start' : 'justify-center'
             )}
           >
-            <div className={`flex items-center ${!shouldHighlight ? '' : 'text-primary-dark font-semibold'}`}>
+            <div className={cn('flex items-center', shouldHighlight && 'text-blue-600 dark:text-blue-500 font-semibold')}>
               {Icon && <Icon className={cn('h-1 w-1 flex-shrink-0', !collapsed ? 'mr-3' : 'mx-auto')} />}
-              {!collapsed && <span className="truncate ">{item.title}</span>}
+              {!collapsed && <span className="truncate">{item.title}</span>}
             </div>
             {!collapsed && item.badge !== undefined && (
-              <span className="ml-auto inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium rounded-full bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200">
+              <span className="ml-auto inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
                 {item.badge}
               </span>
             )}
@@ -215,17 +252,17 @@ const Sidebar = ({ className, collapsed = false, onCollapse }: SidebarProps) => 
             key={path.join('-')}
             to={item.path}
             className={cn(
-              'w-full flex items-center px-3 py-2 rounded-md text-sm  transition-colors ',
+              'w-full flex items-center px-3 py-2 rounded-md text-sm transition-colors',
               'focus:outline-none',
               shouldHighlight
-                ? ' text-primary-dark font-semibold'
-                : 'text-text-muted ',
+                ? 'text-blue-600 dark:text-blue-500 font-semibold'
+                : 'text-slate-600 dark:text-slate-400',
               'justify-between'
             )}
           >
             <div className="flex items-center">
               {Icon && <Icon className={cn('h-5 w-5 flex-shrink-0 mr-3')} />}
-              <span className="truncate hover:text-primary-dark">{item.title}</span>
+              <span className="truncate hover:text-blue-600 dark:hover:text-blue-400">{item.title}</span>
             </div>
             {item.badge !== undefined && (
               <span className="ml-2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200">
@@ -243,27 +280,26 @@ const Sidebar = ({ className, collapsed = false, onCollapse }: SidebarProps) => 
             onClick={(e) => handleItemClick(e, item, path)}
             style={{ border: 'none', outline: 'none', boxShadow: 'none' }}
             className={cn(
-              'w-full flex cursor-pointer items-center px-3 py-2 rounded-md text-sm  transition-colors',
+              'w-full flex cursor-pointer items-center px-3 py-2 rounded-md text-sm transition-colors',
               'focus:outline-none',
-              // 'hover:bg-secondary-light',
               'justify-between',
               shouldHighlight
-                ? ' text-primary-dark font-semibold'
-                : 'text-text-muted ',
+                ? 'text-blue-600 dark:text-blue-500 font-semibold'
+                : 'text-slate-600 dark:text-slate-400',
             )}
           >
             <div className="flex items-center">
               {Icon && (
                 <Icon
                   className={cn(
-                    'h-5 w-5 font-bold flex-shrink-0 mr-3',
+                    'h-5 w-5 flex-shrink-0 mr-3',
                     shouldHighlight
-                      ? 'text-primary-dark font-semibold'
-                      : ''
+                      ? 'text-blue-600 dark:text-blue-500'
+                      : 'text-slate-500 dark:text-slate-400'
                   )}
                 />
               )}
-              <span className="truncate  hover:text-primary-dark">{item.title}</span>
+              <span className="truncate hover:text-blue-600 dark:hover:text-blue-400">{item.title}</span>
             </div>
             {hasChildren && (
               <ChevronRight
@@ -309,11 +345,11 @@ const Sidebar = ({ className, collapsed = false, onCollapse }: SidebarProps) => 
                       onClick={(e) => handleItemClick(e, child, [...path, childIndex])}
                       className={cn(
                         "w-full flex items-center justify-between py-2 pl-2 rounded-md",
-                        "text-2xl transition-colors cursor-pointer",
-                        "hover:text-primary-dark/50",
+                        "text-sm transition-colors cursor-pointer",
+                        "hover:text-blue-600 dark:hover:text-blue-400",
                         hasActiveChild(child)
-                          ? "text-primary-dark"
-                          : "text-table-header-text"
+                          ? "text-blue-600 dark:text-blue-500 font-semibold"
+                          : "text-slate-600 dark:text-slate-400"
                       )}
                     >
                       {renderNavItem(child, [...path, childIndex], level + 1)}
@@ -335,17 +371,16 @@ const Sidebar = ({ className, collapsed = false, onCollapse }: SidebarProps) => 
         key={path.join('-')}
         to={item.path || '#'}
         className={cn(
-          'flex items-center px-3 py-1.5 rounded-md text-sm  transition-colors',
+          'flex items-center px-3 py-1.5 rounded-md text-sm transition-colors',
           'focus:outline-none',
           shouldHighlight
-            ? 'text-primary-dark font-semibold'
-            : 'text-text-muted ',
-          'hover:bg-secondary-ligh',
-          'justify-between',
-          'text-sm'
+            ? 'text-blue-600 dark:text-blue-500 font-semibold'
+            : 'text-slate-600 dark:text-slate-400',
+          'hover:bg-slate-100 dark:hover:bg-slate-800',
+          'justify-between'
         )}
       >
-        <span className="truncate hover:text-primary-dark " >{item.title}</span>
+        <span className="truncate hover:text-blue-600 dark:hover:text-blue-400">{item.title}</span>
         {item.badge !== undefined && (
           <span className="ml-2 inline-flex items-center justify-center px-1.5 py-0.5 text-md font-medium rounded-full bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200">
             {item.badge}
@@ -374,41 +409,22 @@ const Sidebar = ({ className, collapsed = false, onCollapse }: SidebarProps) => 
           className={`flex items-center justify-between ${collapsed ? "h-18" : "h-24"
             } px-4`}
         >
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/" className={cn("flex items-center", collapsed ? "space-x-2" : "justify-center w-full")}>
             {collapsed ? (
-              import.meta.env.VITE_PRODUCT_TYPE == "demo" ? (
-                // ✅ Demo mode collapsed logos
-                <img
-                  src={
-                    resolvedTheme === "dark"
-                      ? logo
-                      : logo
-                  }
-                  alt="Demo Logo"
-                  className="h-8"
-                />
-              ) : (
-                // ✅ Normal collapsed logos
-                <img
-                  src={
-                    resolvedTheme === "dark"
-                      ? config?.app_logo_dark
-                      : config?.app_logo_dark
-                  }
-                  alt="Logo"
-                  className="h-8"
-                />
-              )
+              // ✅ Collapsed mode - Show favicon
+              <LogoWithFallback
+                src={faviconLogo}
+                alt="ConvoX"
+                className="h-10 w-10 object-contain"
+                collapsed={true}
+              />
             ) : (
-              // ✅ Full logos (expanded mode)
-              <img
-                src={
-                  resolvedTheme === "dark"
-                    ? config?.web_logo_dark
-                    : config?.web_logo_light
-                }
-                alt="Logo"
-                className="h-20"
+              // ✅ Expanded mode - Show expanded sidebar logo
+              <LogoWithFallback
+                src={expandedSidebarLogo}
+                alt="ConvoX Logo"
+                className="h-10 w-auto object-contain mx-auto"
+                collapsed={false}
               />
             )}
           </Link>

@@ -99,7 +99,7 @@ export const GeneralSettings: React.FC<GeneralSettingsProps> = ({
         {/* Primary Color Picker */}
         <ColorPicker
           label="Primary Color"
-          value={data.app_primary_color || '#FCC604'}
+          value={data.app_primary_color || '#2563eb'}
           onChange={(color) => onChange('app_primary_color', color)}
           className="text-text-muted"
         />

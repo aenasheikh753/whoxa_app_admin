@@ -297,7 +297,7 @@ export function EditLanguageForm({
           <Button
             type="submit"
             disabled={disabled || isLoading}
-            className="w-32 sm:w-40 bg-primary text-button-text  font-semibold py-2 text-sm sm:text-base rounded-md transition-colors duration-200"
+            className="w-32 sm:w-40 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-2 text-sm sm:text-base rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
           >
             {isLoading ? (mode === "edit" ? "Updating..." : "Uploading...") : "Submit"}
           </Button>

@@ -139,7 +139,7 @@ const YearlyCallData: React.FC = () => {
                 className="bg-secondary rounded-lg p-6 shadow-sm flex items-center justify-center"
                 style={{ minHeight: "400px" }}
             >
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
             </div>
         );
     }
@@ -175,7 +175,7 @@ const YearlyCallData: React.FC = () => {
                                                 key={y}
                                                 value={y}
                                                 className={({ active }) =>
-                                                    `relative cursor-pointer select-none py-2 pl-3 pr-9 ${active ? " bg-table-row-hover text-primary" : "   text-black   dark:text-white"
+                                                    `relative cursor-pointer select-none py-2 pl-3 pr-9 ${active ? " bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400" : "   text-black   dark:text-white"
                                                     }`
                                                 }
                                             >
@@ -184,7 +184,7 @@ const YearlyCallData: React.FC = () => {
                                                         <span className={`block ${selected ? "font-semibold" : "font-normal"}`}>{y}</span>
                                                         {selected ? (
                                                             <span
-                                                                className={`absolute inset-y-0 right-0 flex items-center pr-4 ${active ? "text-white" : "text-primary"
+                                                                className={`absolute inset-y-0 right-0 flex items-center pr-4 ${active ? "text-blue-600 dark:text-blue-400" : "text-blue-600 dark:text-blue-400"
                                                                     }`}
                                                             >
                                                                 <CheckIcon className="h-4 w-4" />

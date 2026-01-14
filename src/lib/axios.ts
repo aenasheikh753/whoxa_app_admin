@@ -13,8 +13,8 @@ const createAxiosInstance = (baseURL: string): AxiosInstance => {
       'Accept': 'application/json',
       'X-Requested-With': 'XMLHttpRequest',
     },
-    // Only enable credentials if we're not in development or if explicitly needed
-    withCredentials: import.meta.env.PROD,
+    // Enable credentials for CORS
+    withCredentials: false,
   });
 
   // Request interceptor

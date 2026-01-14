@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useMemo } from "react";
 import ReactApexChart from "react-apexcharts";
 import { ChevronDown } from "lucide-react";

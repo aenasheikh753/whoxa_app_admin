@@ -59,38 +59,71 @@ export default function BlockedUserListPage() {
     {
       header: 'ID',
       cell: (r) => (
-        <span className="text-primary-600">#{r.id}</span>
+        <span className="text-primary-600 dark:text-blue-400">#{r.id}</span>
       ),
-      className: 'w-24',
+      className: 'w-16 sm:w-24',
     },
      {
        header: 'Date',
-       cell: (r) => new Date(r.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }),
+       cell: (r) => {
+         const date = new Date(r.date);
+         return (
+           <div className="flex flex-col">
+             <span className="text-xs sm:text-sm text-gray-900 dark:text-slate-50">
+               {date.toLocaleDateString(undefined, { 
+                 year: 'numeric', 
+                 month: 'short', 
+                 day: 'numeric' 
+               })}
+             </span>
+             <span className="text-xs text-gray-500 dark:text-slate-400 sm:hidden">
+               {date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
+             </span>
+           </div>
+         );
+       },
        sortable: true,
+       className: 'min-w-[100px] sm:min-w-[150px]',
      },
     {
       header: 'Blocked By',
       cell: (r) => (
-        <div className="flex items-center gap-3">
-          <img src={r.block_by.profile_pic} className="h-8 w-8 rounded-full" alt="avatar" />
-          <div>
-            <div className="text-gray-900 text-sm font-medium">{r.block_by.full_name}</div>
-            <div className="text-gray-500 text-sm font-extralight">{r.block_by.user_name}</div>
+        <div className="flex items-center gap-2 sm:gap-3 min-w-[150px] sm:min-w-[200px]">
+          <img 
+            src={r.block_by.profile_pic || '/assets/profile12-img.png'} 
+            className="h-6 w-6 sm:h-8 sm:w-8 rounded-full object-cover flex-shrink-0" 
+            alt="avatar"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = '/assets/profile12-img.png';
+            }}
+          />
+          <div className="min-w-0 flex-1">
+            <div className="text-gray-900 dark:text-slate-50 text-xs sm:text-sm font-medium truncate">{r.block_by.full_name || 'N/A'}</div>
+            <div className="text-gray-500 dark:text-slate-400 text-xs font-extralight truncate">{r.block_by.user_name || ''}</div>
           </div>
         </div>
       ),
+      className: 'min-w-[150px] sm:min-w-[200px]',
     },
     {
       header: 'Blocked To',
       cell: (r) => (
-        <div className="flex items-center gap-3">
-          <img src={r.block_to.profile_pic} className="h-8 w-8 rounded-full" alt="avatar" />
-          <div>
-            <div className="text-gray-900 text-sm font-medium">{r.block_to.full_name}</div>
-            <div className="text-gray-500 text-sm font-extralight">{r.block_to.user_name}</div>
+        <div className="flex items-center gap-2 sm:gap-3 min-w-[150px] sm:min-w-[200px]">
+          <img 
+            src={r.block_to.profile_pic || '/assets/profile12-img.png'} 
+            className="h-6 w-6 sm:h-8 sm:w-8 rounded-full object-cover flex-shrink-0" 
+            alt="avatar"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = '/assets/profile12-img.png';
+            }}
+          />
+          <div className="min-w-0 flex-1">
+            <div className="text-gray-900 dark:text-slate-50 text-xs sm:text-sm font-medium truncate">{r.block_to.full_name || 'N/A'}</div>
+            <div className="text-gray-500 dark:text-slate-400 text-xs font-extralight truncate">{r.block_to.user_name || ''}</div>
           </div>
         </div>
       ),
+      className: 'min-w-[150px] sm:min-w-[200px]',
     },
   ];
   // Client-side pagination handled by DataTable; we fetch and combine all pages
@@ -141,13 +174,13 @@ export default function BlockedUserListPage() {
     fetchAll(search);
   }, [search]);
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 p-2 sm:p-4">
       <div className="mt-2">
         <Breadcrumb />
       </div>
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-gray-900">Blocked Users List</h1>
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h1 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-slate-50">Blocked Users List</h1>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -155,18 +188,20 @@ export default function BlockedUserListPage() {
               if (e.key === 'Enter') fetchAll(search);
             }}
             placeholder="Search by name or number"
-            className="w-72"
+            className="w-full sm:w-64 lg:w-72"
           />
           <Button
             variant="secondary"
-            className="text-black"
+            className="text-black dark:text-slate-50 w-full sm:w-auto"
             onClick={() => { fetchAll(search); }}
           >
             Search
           </Button>
         </div>
       </div>
-      <DataTable data={rows} columns={columns} defaultPageSize={10} />
+      <div className="overflow-x-auto -mx-2 sm:mx-0">
+        <DataTable data={rows} columns={columns} defaultPageSize={10} />
+      </div>
     </div>
   );
 }

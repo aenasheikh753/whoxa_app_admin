@@ -61,9 +61,9 @@ export function NotificationButton() {
         <div className="relative inline-block">
             <Button
                 size="icon"
-                // variant=""
+                variant="outline"
                 onClick={() => setOpen((prev) => !prev)}
-                className="relative h-10 w-10  border rounded-full    l text-text "
+                className="relative h-10 w-10 border-2 border-blue-600 dark:border-blue-500 bg-white dark:bg-slate-800 rounded-full text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
             >
                 <Bell className="h-5 w-5" />
                 {isAvailable && (

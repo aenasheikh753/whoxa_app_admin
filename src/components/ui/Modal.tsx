@@ -61,6 +61,13 @@ const Modal = ({
               contentClassName
             )}
             onEscapeKeyDown={(e) => e.preventDefault()}
+            onInteractOutside={(e) => {
+              // Don't close modal when clicking on form elements
+              const target = e.target as HTMLElement;
+              if (target.closest('form') || target.closest('button[type="submit"]')) {
+                e.preventDefault();
+              }
+            }}
           >
             {(title || showCloseButton) && (
               <div className="flex text-table-header-text items-center justify-center  rounded-xl py-4 shadow-lg ">

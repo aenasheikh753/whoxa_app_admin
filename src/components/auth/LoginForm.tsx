@@ -6,7 +6,6 @@ import { useAuth } from '@/providers/AuthProvider';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import {
-  Card,
   CardContent,
   CardFooter,
 } from '../ui/Card';
@@ -15,7 +14,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
@@ -29,25 +27,18 @@ const loginFormSchema = z.object({
   password: z
     .string()
     .min(1, 'Password is required')
-    .min(8, 'Password must be at least 8 characters'),
+    .min(2, 'Password must be at least 8 characters'),
   rememberMe: z.boolean().optional(),
 });
-
-// ✅ Demo Credentials
-const DEMO_CREDENTIALS = {
-  email: 'demo@whoxa.com',
-  password: 'Admin@123?',
-};
 
 interface LoginFormProps {
   onSuccess?: () => void;
   onError?: (error: Error) => void;
-  className?: string;
 }
 
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
-export function LoginForm({ onSuccess, onError, className }: LoginFormProps) {
+export function LoginForm({ onSuccess, onError }: LoginFormProps) {
   const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -60,7 +51,7 @@ export function LoginForm({ onSuccess, onError, className }: LoginFormProps) {
     },
   });
 
-  const { formState: { isSubmitting }, setValue } = form;
+  const { formState: { isSubmitting } } = form;
 
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
@@ -75,13 +66,13 @@ export function LoginForm({ onSuccess, onError, className }: LoginFormProps) {
   };
 
   return (
-    <div className="w-full    ">
+    <div className="w-full">
       <Form<LoginFormValues> form={form} onSubmit={onSubmit}>
-        <CardContent className="w-full flex    flex-col  gap-4">
+        <CardContent className="w-full flex flex-col gap-6 p-0">
           {/* Email Field */}
           <FormField name="email">
             <FormItem>
-              <label htmlFor="Password" className=' text-black   font-normal '> Email <span className=' text-red-500'>*</span></label>
+              <label htmlFor="email" className='text-slate-700 dark:text-slate-300 font-medium text-sm'>Email <span className='text-red-500'>*</span></label>
               <FormControl>
                 <div className="relative mt-2">
                   <Input
@@ -89,10 +80,10 @@ export function LoginForm({ onSuccess, onError, className }: LoginFormProps) {
                     placeholder="Enter your email"
                     autoComplete="email"
                     disabled={isSubmitting}
-                    className="w-full pl-10  text-black bg-white pr-4"
+                    className="w-full pl-10 text-slate-900 dark:text-slate-50 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-400/20 pr-4 transition-all"
                     {...form.register("email")}
                   />
-                  <Mail className="absolute  text-black left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  <Mail className="absolute text-slate-500 dark:text-slate-400 left-3 top-1/2 h-4 w-4 -translate-y-1/2 pointer-events-none" />
                 </div>
               </FormControl>
               <FormMessage />
@@ -102,7 +93,7 @@ export function LoginForm({ onSuccess, onError, className }: LoginFormProps) {
           {/* Password Field */}
           <FormField name="password">
             <FormItem>
-              <label htmlFor="Password" className=' text-black  font-normal '> Password <span className=' text-red-500'>*</span></label>
+              <label htmlFor="password" className='text-slate-700 dark:text-slate-300 font-medium text-sm'>Password <span className='text-red-500'>*</span></label>
               <FormControl>
                 <div className="relative mt-2">
                   <Input
@@ -110,14 +101,14 @@ export function LoginForm({ onSuccess, onError, className }: LoginFormProps) {
                     placeholder="Enter your password"
                     autoComplete="current-password"
                     disabled={isSubmitting}
-                    className="w-full pl-10  text-black bg-white pr-10"
+                    className="w-full pl-10 text-slate-900 dark:text-slate-50 bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-600 pr-10"
                     {...form.register("password")}
                   />
-                  <Lock className="absolute text-black left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  <Lock className="absolute text-slate-500 dark:text-slate-400 left-3 top-1/2 h-4 w-4 -translate-y-1/2 pointer-events-none" />
                   <button
                     type="button"
                     onClick={togglePasswordVisibility}
-                    className="absolute right-3 top-1/2 text-black -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="absolute right-3 top-1/2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 -translate-y-1/2 transition-colors"
                     disabled={isSubmitting}
                     aria-label={showPassword ? "Hide password" : "Show password"}
                   >
@@ -135,10 +126,10 @@ export function LoginForm({ onSuccess, onError, className }: LoginFormProps) {
         </CardContent>
 
         {/* Submit Button */}
-        <CardFooter className="flex flex-col  mt-8 w-full">
+        <CardFooter className="flex flex-col mt-6 w-full">
           <Button
             type="submit"
-            className="  mx-auto  w-[40%]   bg-primary  text-button-text     cursor-pointer  border border-primary  py-2  font-medium rounded-md transition-colors duration-200"
+            className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
             disabled={isSubmitting}
           >
             {isSubmitting ? (
@@ -170,49 +161,6 @@ export function LoginForm({ onSuccess, onError, className }: LoginFormProps) {
             )}
           </Button>
         </CardFooter>
-
-        {/* Demo Credentials Table */}
-        {import.meta.env.VITE_PRODUCT_TYPE === "demo" && (
-          <div className="py-8 text-center rounded-lg w-full">
-            <table className="w-full border-collapse">
-              <tbody>
-                <tr className="border border-border">
-                  <td className="px-4 py-2 text-left font-poppins text-black  border-primary border">
-                    Email:
-                  </td>
-                  <td className="px-4 py-2 text-black font-poppins text-left border border-primary">
-                    {DEMO_CREDENTIALS.email}
-                  </td>
-                </tr>
-                <tr className="border border-primary">
-                  <td className="px-4 py-2 text-left font-poppins text-black border border-primary">
-                    Password:
-                  </td>
-                  <td className="px-4 py-2 text-black font-poppins text-left border border-primary">
-                    {DEMO_CREDENTIALS.password}
-                  </td>
-                </tr>
-                <tr className="border border-primary cursor-pointer">
-                  <td
-                    colSpan={2}
-                    className="px-4 py-4 text-center border border-primary"
-                  >
-                    <button
-                      className="mx-auto w-[40%] bg-primary cursor-pointer text-button-text via-primary border border-primary to-primary/50 py-2 px-4 font-medium rounded-md transition-colors duration-200"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setValue("email", DEMO_CREDENTIALS.email);
-                        setValue("password", DEMO_CREDENTIALS.password);
-                      }}
-                    >
-                      Copy
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        )}
 
       </Form>
     </div>

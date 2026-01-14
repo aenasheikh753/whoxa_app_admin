@@ -103,18 +103,11 @@ class AvatarService extends BaseApiService {
   async deleteAvatar(
     avatarId: number
   ): Promise<{ status: boolean; message: string; deleted_count: number }> {
-    const formData = new FormData();
-    formData.append("avatar_id", avatarId.toString());
-
     return this.post<
       { status: boolean; message: string; deleted_count: number },
       { status: boolean; message: string; deleted_count: number },
-      FormData
-    >("/delete-avatar", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+      { avatar_id: number }
+    >("/delete-avatar", { avatar_id: avatarId });
   }
 }
 

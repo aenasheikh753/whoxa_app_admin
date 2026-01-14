@@ -63,7 +63,7 @@ export default function YearlyUserData({ className }: UserCountCardProps) {
         tooltip: { theme: "dark", style: { fontSize: "12px", fontFamily: "inherit" } },
         legend: { position: "bottom", labels: { colors: textMuted } },
         fill: { opacity: 1 },
-        colors: ["#fbc02d", "#5E35B1"],
+        colors: ["#2563eb", "#5E35B1"],
         states: { normal: { filter: { type: "none" } }, hover: { filter: { type: "none" } }, active: { filter: { type: "none" } } },
     };
 
@@ -76,7 +76,7 @@ export default function YearlyUserData({ className }: UserCountCardProps) {
     if (isLoading)
         return (
             <div className="bg-secondary rounded-lg p-6 shadow-sm flex items-center justify-center" style={{ minHeight: "400px" }}>
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
             </div>
         );
 
@@ -109,7 +109,7 @@ export default function YearlyUserData({ className }: UserCountCardProps) {
                                             value={y}
                                             className={({ active }) =>
                                                 `relative cursor-pointer select-none py-2 pl-3 pr-9 ${
-                                                    active ? " bg-table-row-hover  text-primary" : "      text-black dark:text-white  "
+                                                    active ? " bg-blue-50 dark:bg-blue-900/20  text-blue-600 dark:text-blue-400" : "      text-black dark:text-white  "
                                                 }`
                                             }
                                         >
@@ -119,7 +119,7 @@ export default function YearlyUserData({ className }: UserCountCardProps) {
                                                     {selected ? (
                                                         <span
                                                             className={`absolute inset-y-0 right-0 flex items-center pr-4 ${
-                                                                active ? "text-white" : "text-primary"
+                                                                active ? "text-blue-600 dark:text-blue-400" : "text-blue-600 dark:text-blue-400"
                                                             }`}
                                                         >
                                                             <CheckIcon className="h-4 w-4" />

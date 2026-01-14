@@ -263,11 +263,11 @@ export const Settings: React.FC = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="lg:hidden p-2 rounded-md border border-table-divider bg-white shadow-sm"
+            className="lg:hidden p-2 rounded-md border-2 border-blue-600 dark:border-blue-500 bg-white dark:bg-slate-800 shadow-sm hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
             aria-label="Toggle sidebar"
           >
             <svg
-              className="w-6 h-6"
+              className="w-6 h-6 text-blue-600 dark:text-blue-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -359,7 +359,7 @@ export const Settings: React.FC = () => {
                     <Button
                       onClick={handleSave}
                       disabled={saving}
-                      className="w-full sm:w-40 bg-primary text-button-text font-semibold py-2 px-4 rounded-md transition-colors duration-200 flex items-center justify-center"
+                      className="w-full sm:w-40 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center"
                     >
                       {saving ? (
                         <>

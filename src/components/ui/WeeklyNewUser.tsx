@@ -1,4 +1,3 @@
-"use client";
 import { PiUserCircleThin } from "react-icons/pi";
 
 import React, { useEffect, useState } from "react";

@@ -95,7 +95,7 @@ export default function AddGiftForm({ onSubmit }: AddGiftFormProps) {
       <div className="pt-2">
         <Button
           type="submit"
-          className="w-full h-11 rounded-md bg-emerald-600 text-white hover:bg-emerald-700"
+          className="w-full h-11 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white transition-all duration-200 shadow-md hover:shadow-lg"
         >
           Submit
         </Button>

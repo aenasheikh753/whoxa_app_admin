@@ -121,16 +121,26 @@ export function AvatarForm({
           close();
         }
       } else {
-        throw new Error(
-          response.message ||
-          `Failed to ${mode === "edit" ? "update" : "upload"} avatar`
-        );
+        const errorMsg = typeof response.message === 'string' 
+          ? response.message 
+          : `Failed to ${mode === "edit" ? "update" : "upload"} avatar`;
+        throw new Error(errorMsg);
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Avatar upload error:', error);
+      let errorMessage = `Failed to ${mode === "edit" ? "update" : "upload"} avatar. Please try again.`;
+      
+      if (error?.message) {
+        errorMessage = typeof error.message === 'string' ? error.message : String(error.message);
+      } else if (error?.response?.data?.message) {
+        errorMessage = typeof error.response.data.message === 'string' 
+          ? error.response.data.message 
+          : String(error.response.data.message);
+      }
+      
       toast({
         title: "Error",
-        description: `Failed to ${mode === "edit" ? "update" : "upload"
-          } avatar. Please try again.`,
+        description: errorMessage,
         variant: "error",
       });
     } finally {
@@ -249,7 +259,7 @@ export function AvatarForm({
           <Button
             type="submit"
             disabled={isLoading || (mode === "create" && !selectedFile)}
-            className="w-32 sm:w-40 bg-primary text-button-text  font-semibold py-2 text-sm sm:text-base rounded-md transition-colors duration-200"
+            className="w-32 sm:w-40 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-2 text-sm sm:text-base rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
           >
             {isLoading
               ? mode === "edit"

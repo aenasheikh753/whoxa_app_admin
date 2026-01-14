@@ -173,18 +173,18 @@ export function DataTable<TData>({
                   key={col.id ?? idx}
                   onClick={() => col.sortable && onHeaderClick(idx, col)}
                   className={cn(
-                    "px-3 py-5 text-left font-medium text-table-header-text uppercase tracking-wide select-none whitespace-nowrap",
+                    "px-2 sm:px-3 py-3 sm:py-5 text-left font-medium text-table-header-text uppercase tracking-wide select-none whitespace-nowrap",
                     col.className,
                     col.sortable && "cursor-pointer",
                     idx === 0
-                      ? "pl-6 pr-4 rounded-l-md" // first col rounded left
+                      ? "pl-3 sm:pl-6 pr-2 sm:pr-4 rounded-l-md" // first col rounded left
                       : idx === columns.length - 1
-                        ? "pl-4 pr-6 rounded-r-md" // last col rounded right
-                        : "px-4"
+                        ? "pl-2 sm:pl-4 pr-3 sm:pr-6 rounded-r-md" // last col rounded right
+                        : "px-2 sm:px-4"
                   )}
                 >
                   <div className="inline-flex items-center gap-1 whitespace-nowrap">
-                    <span className="text-sm font-medium text-table-header-text uppercase tracking-wide w-full max-w-[200px]">
+                    <span className="text-xs sm:text-sm font-medium text-table-header-text uppercase tracking-wide w-full max-w-[200px]">
                       {col.header}
                     </span>
                     {col.sortable && (
@@ -227,8 +227,8 @@ export function DataTable<TData>({
                   <td
                     key={(col.id ?? cIndex) + "-" + rIndex}
                     className={cn(
-                      "px-4 py-3 text-sm text-table-text border-b border-table-divider",
-                      cIndex === 0 ? "pl-6" : cIndex === columns.length - 1 ? "pr-6" : "",
+                      "px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-table-text border-b border-table-divider",
+                      cIndex === 0 ? "pl-3 sm:pl-6" : cIndex === columns.length - 1 ? "pr-3 sm:pr-6" : "",
                       rIndex === pageData.length - 1 ? "border-b-0" : "",
                       col.className
                     )}
@@ -247,7 +247,7 @@ export function DataTable<TData>({
         <div className="text-text-muted flex justify-center items-center gap-4 ">
           <div>
             <select
-              className="h-8 rounded border bg-secondary px-2 text-sm"
+              className="h-8 rounded border-2 border-blue-600 dark:border-blue-500 bg-secondary px-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors"
               value={pageSize}
               aria-label="Rows per page"
               onChange={(e) => {
@@ -279,8 +279,8 @@ export function DataTable<TData>({
           <div className="flex items-center gap-1">
             <button
               className={cn(
-                "h-8 w-8 rounded text-sm font-medium",
-                1 === currentPage ? "bg-primary text-black rounded-full" : "hover:bg-primary/80 hover:text-black hover:rounded-full"
+                "h-8 w-8 rounded text-sm font-medium transition-all duration-200",
+                1 === currentPage ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full shadow-md" : "hover:bg-blue-600 hover:text-white hover:rounded-full"
               )}
               onClick={() => handlePageChange(1)}
             >
@@ -301,8 +301,8 @@ export function DataTable<TData>({
                     <button
                       key={i}
                       className={cn(
-                        "h-8 w-8 rounded text-sm font-medium",
-                        i === currentPage ? "bg-primary text-black rounded-full" : "hover:bg-primary/80 hover:text-black hover:rounded-full"
+                        "h-8 w-8 rounded text-sm font-medium transition-all duration-200",
+                        i === currentPage ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full shadow-md" : "hover:bg-blue-600 hover:text-white hover:rounded-full"
                       )}
                       onClick={() => handlePageChange(i)}
                     >
@@ -319,8 +319,8 @@ export function DataTable<TData>({
             {totalPages > 1 && (
               <button
                 className={cn(
-                  "h-8 w-8 rounded text-sm font-medium",
-                  totalPages === currentPage ? "bg-primary text-black rounded-full" : "hover:bg-primary/80 hover:text-black hover:rounded-full"
+                  "h-8 w-8 rounded text-sm font-medium transition-all duration-200",
+                  totalPages === currentPage ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full shadow-md" : "hover:bg-blue-600 hover:text-white hover:rounded-full"
                 )}
                 onClick={() => handlePageChange(totalPages)}
               >

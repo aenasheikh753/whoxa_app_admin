@@ -40,18 +40,18 @@ export default function DashboardUserListPage() {
   {
     header: 'ID',
     cell: (r) => (
-      <span className="text-primary-600">#{r.id}</span>
+      <span className="text-blue-600 text-xs sm:text-sm">#{r.id}</span>
     ),
-    className: 'w-24',
+    className: 'w-16 sm:w-24',
   },
   {
     header: 'Full Name',
     cell: (r) => (
-      <div className="flex items-center gap-3">
-        <img src={r.profile_pic} className="h-8 w-8 rounded-full" alt="avatar" />
-        <div>
-          <div className="text-table-text text-sm font-medium">{r.fullName}</div>
-          <div className="text-xs text-text-muted">{r.emailMasked}</div>
+      <div className="flex items-center gap-2 sm:gap-3">
+        <img src={r.profile_pic} className="h-6 w-6 sm:h-8 sm:w-8 rounded-full object-cover" alt="avatar" />
+        <div className="min-w-0">
+          <div className="text-table-text text-xs sm:text-sm font-medium truncate">{r.fullName}</div>
+          <div className="text-xs text-text-muted truncate hidden sm:block">{r.emailMasked}</div>
         </div>
       </div>
     ),
@@ -60,39 +60,53 @@ export default function DashboardUserListPage() {
     header: 'User Name',
     accessor: 'username',
     sortable: true,
+    className: 'hidden md:table-cell',
   },
   {
     header: 'Country',
     cell: (r) => (
-      <div className="inline-flex items-center gap-2">
-        <span className="text-lg leading-none">{countryFlag(r.countryCode)}</span>
-        <span className="text-sm text-table-text">{r.country}</span>
+      <div className="inline-flex items-center gap-1 sm:gap-2">
+        <span className="text-base sm:text-lg leading-none">{countryFlag(r.countryCode)}</span>
+        <span className="text-xs sm:text-sm text-table-text truncate max-w-[80px] sm:max-w-none">{r.country}</span>
       </div>
     ),
+    className: 'hidden lg:table-cell',
   },
   {
     header: 'Joining date',
-    cell: (r) => new Date(r.joinedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }),
+    cell: (r) => {
+      const date = new Date(r.joinedAt);
+      return (
+        <div className="text-xs sm:text-sm">
+          <span className="hidden xl:inline">{date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+          <span className="xl:hidden">{date.toLocaleDateString(undefined, { year: '2-digit', month: 'short', day: 'numeric' })}</span>
+        </div>
+      );
+    },
     sortable: true,
+    className: 'hidden md:table-cell',
   },
   {
     header: 'Platform',
     cell: (r) => (
-      <span className={r.platform === 'Web' ? 'text-green-500 border font-medium border-green-300 px-2 py-1 rounded-full text-xs' : 'text-yellow-700 border font-medium font-bold border-yellow-500 px-2 py-1 rounded-full text-xs'}>
+      <span className={r.platform === 'Web' ? 'text-green-500 border font-medium border-green-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs' : 'text-yellow-700 border font-medium font-bold border-yellow-500 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs'}>
         {r.platform}
       </span>
     ),
+    className: 'hidden sm:table-cell',
   },
   {
     header: 'Report Counts',
     accessor: 'reportCounts',
+    className: 'hidden lg:table-cell',
     // sortable: true,
   },
   {
     header: 'Status',
     cell: (r) => (
-      <span className={r.status === 'Online' ? 'text-green-600 border border-emerald-100 px-2 py-1 rounded-full text-xs' : 'text-red-500 border border-red-400 px-2 py-1 rounded-full text-xs'}>{r.status}</span>
+      <span className={r.status === 'Online' ? 'text-green-600 border border-emerald-100 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs' : 'text-red-500 border border-red-400 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs'}>{r.status}</span>
     ),
+    className: 'hidden xl:table-cell',
   },
   {
       header: 'Block',
@@ -126,10 +140,10 @@ export default function DashboardUserListPage() {
               );
             }
           }}
-          className="p-2"
+          className="p-1 sm:p-2"
         />
       ),
-      className: 'w-28',
+      className: 'w-20 sm:w-28',
     },
   ];
 
@@ -170,15 +184,15 @@ export default function DashboardUserListPage() {
     fetchAll(search);
   }, [search]);
   return (
-    <div className="space-y-4">
-        <h1 className="text-xl font-semibold text-table-header-text">User List</h1>
+    <div className="space-y-3 sm:space-y-4 p-3 sm:p-4 md:p-6">
+        <h1 className="text-lg sm:text-xl font-semibold text-table-header-text">User List</h1>
        
-      <div className="flex items-center justify-between ">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div className="mt-2">
           <Breadcrumb />
         </div>
-        <div className="flex items-center gap-2 relative w-full max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 font-extrabold text-text-muted" />
+        <div className="flex items-center gap-2 relative w-full sm:w-auto sm:max-w-md">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 font-extrabold text-text-muted" />
 
           <Input
             value={search}
@@ -187,12 +201,14 @@ export default function DashboardUserListPage() {
               if (e.key === "Enter") fetchAll(search);
             }}
             placeholder="Search by name or number"
-            className="pl-9 bg-secondary/80 text-text-muted sm:w-full  min-w-[200px]"
+            className="pl-8 sm:pl-9 bg-secondary/80 text-text-muted w-full sm:min-w-[200px] text-sm sm:text-base"
           />
         </div>
 
       </div>
-      <DataTable data={rows} columns={columns} defaultPageSize={10} />
+      <div className="w-full overflow-x-auto">
+        <DataTable data={rows} columns={columns} defaultPageSize={10} />
+      </div>
     </div>
   );
 }

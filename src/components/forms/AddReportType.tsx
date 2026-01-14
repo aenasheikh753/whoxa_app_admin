@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Button } from "@/components/ui/";
 import {
   Form,
@@ -17,6 +19,14 @@ import {
 } from "@/services/global/reportService";
 import { useDemoGuard } from "@/utils/demoGuard";
 
+// Validation schema
+const reportTypeSchema = z.object({
+  report_text: z.string().min(1, "Report text is required"),
+  report_for: z.enum(["user", "group"], {
+    required_error: "Please select report type",
+  }),
+});
+
 type ReportTypeFormData = {
   report_for: "user" | "group";
   report_text: string;
@@ -33,6 +43,7 @@ export function AddReportType({ mode = "create" }: ReportTypeFormProps) {
   const { checkDemo } = useDemoGuard();
 
   const form = useForm<ReportTypeFormData>({
+    resolver: zodResolver(reportTypeSchema),
     defaultValues: {
       report_for: "user",
       report_text: "",
@@ -41,7 +52,7 @@ export function AddReportType({ mode = "create" }: ReportTypeFormProps) {
   });
 
   const reportText = form.watch("report_text");
-  const disabled = !reportText?.trim(); // true if empty string
+  const disabled = !reportText?.trim() || isLoading; // true if empty or loading
   useEffect(() => {
     if (mode === "edit") {
       form.setValue("report_for", form.getValues("report_for"));
@@ -50,15 +61,20 @@ export function AddReportType({ mode = "create" }: ReportTypeFormProps) {
   }, [mode, form]);
 
   const handleSubmit = async (data: ReportTypeFormData) => {
+    if (checkDemo()) {
+      return;
+    }
+    
     setIsLoading(true);
     try {
-      if (checkDemo()) return;
-      let response;
       const uploadParams: ReportTypeParams = {
         report_for: data.report_for,
-        report_text: data.report_text,
+        report_text: data.report_text?.trim(),
       };
-      response = await reportService.addReportType(uploadParams);
+
+      console.log('Submitting report type:', uploadParams);
+      const response = await reportService.addReportType(uploadParams);
+      console.log('Response:', response);
 
       if (response.status) {
         toast({
@@ -72,14 +88,14 @@ export function AddReportType({ mode = "create" }: ReportTypeFormProps) {
       } else {
         throw new Error(
           response.message ||
-          `Failed to ${mode === "edit" ? "update" : "upload"} avatar`
+          `Failed to ${mode === "edit" ? "update" : "add"} report type`
         );
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Submit error:', error);
       toast({
         title: "Error",
-        description: `Failed to ${mode === "edit" ? "update" : "upload"
-          } avatar. Please try again.`,
+        description: error?.response?.data?.message || error?.message || `Failed to ${mode === "edit" ? "update" : "add"} report type. Please try again.`,
         variant: "error",
       });
     } finally {
@@ -88,16 +104,20 @@ export function AddReportType({ mode = "create" }: ReportTypeFormProps) {
   };
   return (
     <div className="space-y-4 sm:space-y-6 px-3 sm:px-4">
-      <Form form={form} onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+      <Form 
+        form={form} 
+        onSubmit={handleSubmit} 
+        className="space-y-4 sm:space-y-6"
+      >
         {/* Report Type */}
         <FormItem>
           <FormLabel required>Report Text</FormLabel>
           <FormControl>
             <FormField name="report_text">
               <input
+                type="text"
                 placeholder="Enter Report Text"
                 disabled={isLoading}
-                onChange={(e) => form.setValue("report_text", e.target.value)}
                 className="flex h-10 sm:h-10 w-full sm:w-[30vw] max-w-full rounded-md border border-table-divider px-3 py-2 mt-2 text-sm text-text-muted focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
               />
             </FormField>
@@ -109,27 +129,22 @@ export function AddReportType({ mode = "create" }: ReportTypeFormProps) {
         <FormItem>
           <FormLabel required>Report For</FormLabel>
           <FormControl>
-            <FormField name="report_for">
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-2 text-text-muted">
-                {["user", "group"].map((g) => (
-                  <label
-                    key={g}
-                    className="flex items-center gap-2 cursor-pointer text-sm sm:text-base"
-                  >
-                    <input
-                      type="radio"
-                      value={g}
-                      checked={form.watch("report_for") === g}
-                      onChange={() =>
-                        form.setValue("report_for", g as "user" | "group")
-                      }
-                      className="w-4 h-4"
-                    />
-                    {g.charAt(0).toUpperCase() + g.slice(1)}
-                  </label>
-                ))}
-              </div>
-            </FormField>
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-2 text-text-muted">
+              {["user", "group"].map((g) => (
+                <label
+                  key={g}
+                  className="flex items-center gap-2 cursor-pointer text-sm sm:text-base"
+                >
+                  <input
+                    type="radio"
+                    value={g}
+                    {...form.register("report_for")}
+                    className="w-4 h-4"
+                  />
+                  {g.charAt(0).toUpperCase() + g.slice(1)}
+                </label>
+              ))}
+            </div>
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -139,7 +154,7 @@ export function AddReportType({ mode = "create" }: ReportTypeFormProps) {
           <Button
             type="submit"
             disabled={disabled || isLoading}
-            className="w-32 sm:w-40 bg-primary  text-button-text  font-semibold py-2 text-sm sm:text-base rounded-md transition-colors duration-200"
+            className="w-32 sm:w-40 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-2 text-sm sm:text-base rounded-lg transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading
               ? mode === "edit"

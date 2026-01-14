@@ -67,7 +67,7 @@ export const SettingsSidebar: React.FC<SettingsSidebarProps> = ({
               onClick={() => onSectionChange(item.id)}
               className={`w-full flex items-center p-3  text-left rounded-lg transition-all duration-200 ${
                 activeSection === item.id
-                  ? 'bg-primary-dark text-button-text shadow-md'
+                  ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
                   : 'text-table-header-text hover:bg-table-row-hover border border-table-divider'
               }`}
             >

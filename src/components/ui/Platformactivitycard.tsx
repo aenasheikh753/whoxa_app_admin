@@ -18,20 +18,24 @@ const PlatformActivity: React.FC = () => {
     useEffect(() => {
         const fetchPlatformData = async () => {
             try {
+                setIsLoading(true);
                 const response = await userService.getPlatformUserCounts();
-                if (response.status && response.data) {
-                    const { android, web,ios } = response.data;
+                if (response?.status && response?.data) {
+                    const { android, web, ios } = response.data;
                     const data = [
-                        { platform: 'android', count: android.totalUsers },
-                        { platform: 'web', count: web.totalUsers },
-                        { platform: 'ios', count: ios.totalUsers },
-
+                        { platform: 'android', count: android?.totalUsers || 0 },
+                        { platform: 'web', count: web?.totalUsers || 0 },
+                        { platform: 'ios', count: ios?.totalUsers || 0 },
                     ].filter(platform => platform.count > 0); // Only show platforms with users
                     setPlatformData(data);
+                } else {
+                    setPlatformData([]);
                 }
-            } catch (error) {
+            } catch (error: any) {
                 console.error('Error fetching platform data:', error);
-                toast.error('Failed to load platform activity data');
+                const errorMessage = error?.response?.data?.error || error?.message || 'Failed to load platform activity data';
+                toast.error(errorMessage);
+                setPlatformData([]);
             } finally {
                 setIsLoading(false);
             }

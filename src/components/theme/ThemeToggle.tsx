@@ -17,13 +17,13 @@ export function ThemeToggle({ variant = 'outline', className, ...props }: ThemeT
 
   return (
     <Button
-      variant='default'
+      variant='outline'
       size="icon"
-      className='h-10 w-10 border  rounded-full text-text  '
+      className='h-10 w-10 border-2 border-blue-600 dark:border-blue-500 bg-white dark:bg-slate-800 rounded-full text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20'
       onClick={toggleTheme}
       {...props}
     >
-      {theme === 'light' && <Sun className="h-5 w-5 " />}
+      {theme === 'light' && <Sun className="h-5 w-5" />}
       {theme === 'dark' && <Moon className="h-5 w-5" />}
       {/* {theme === 'system' && <MonitorCog className="h-4 w-4" />} */}
       <span className="sr-only">Toggle theme</span>

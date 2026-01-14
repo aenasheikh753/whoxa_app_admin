@@ -203,9 +203,9 @@ export const ProfilePage: React.FC = () => {
           <div className="flex border-b border-table-divider rounded-sm">
             <button
               onClick={() => setSelectedTab("profile")}
-              className={`h-10 sm:h-12 flex items-center justify-center px-3 sm:px-4 text-xs sm:text-sm font-medium flex-1 sm:flex-none ${selectedTab === "profile"
-                ? "bg-primary-dark/20 text-primary-dark rounded-tl-xs"
-                : "text-text-muted"
+              className={`h-10 sm:h-12 flex items-center justify-center px-3 sm:px-4 text-xs sm:text-sm font-medium flex-1 sm:flex-none transition-colors duration-200 ${selectedTab === "profile"
+                ? "bg-blue-600 text-white rounded-tl-xs shadow-sm"
+                : "text-text-muted hover:text-blue-600 dark:hover:text-blue-400"
                 }`}
             >
               Edit Profile
@@ -213,9 +213,9 @@ export const ProfilePage: React.FC = () => {
 
             <button
               onClick={() => setSelectedTab("password")}
-              className={`h-10 sm:h-12 flex items-center justify-center px-3 sm:px-4 text-xs sm:text-sm font-medium flex-1 sm:flex-none ${selectedTab === "password"
-                ? "bg-primary-dark/20 text-primary-dark"
-                : "text-gray-500"
+              className={`h-10 sm:h-12 flex items-center justify-center px-3 sm:px-4 text-xs sm:text-sm font-medium flex-1 sm:flex-none transition-colors duration-200 ${selectedTab === "password"
+                ? "bg-blue-600 text-white shadow-sm"
+                : "text-text-muted hover:text-blue-600 dark:hover:text-blue-400"
                 }`}
             >
               Change Password
@@ -471,7 +471,7 @@ export const ProfilePage: React.FC = () => {
               <div className="flex justify-center mt-8 sm:mt-12 mb-6 sm:mb-8 pt-4 sm:pt-6">
                 <Button
                   variant="default"
-                  className="w-32 sm:w-40 bg-primary text-button-text  font-semibold py-2 rounded-md transition-colors duration-200"
+                  className="w-32 sm:w-40 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-2 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
                   onClick={handlePasswordSave}
                 >
                   Submit

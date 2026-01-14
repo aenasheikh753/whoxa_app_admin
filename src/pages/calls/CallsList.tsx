@@ -44,24 +44,24 @@ export default function CallsList({ type }: { type: "audio" | "video" }) {
   const columns: Array<DataTableColumn<any>> = [
     {
       header: "ID",
-      cell: (r) => <span className="text-primary-600">#{r.id}</span>,
-      className: "w-24",
+      cell: (r) => <span className="text-blue-600 text-xs sm:text-sm">#{r.id}</span>,
+      className: "w-16 sm:w-24",
     },
     {
       header: "Caller",
       cell: (r) => (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <img
-            src={r.caller.profile_pic}
-            className="h-8 w-8 rounded-full"
+            src={r.caller?.profile_pic || '/assets/Avatar.png'}
+            className="h-6 w-6 sm:h-8 sm:w-8 rounded-full object-cover"
             alt="avatar"
           />
-          <div>
-            <div className="text-table-text text-sm font-medium">
-              {r.caller.first_name} {r.caller.last_name}
+          <div className="min-w-0">
+            <div className="text-table-text text-xs sm:text-sm font-medium truncate">
+              {r.caller?.first_name || ''} {r.caller?.last_name || ''}
             </div>
-            {r.caller.username && (
-              <div className="text-xs text-text-muted">
+            {r.caller?.username && (
+              <div className="text-xs text-text-muted truncate hidden sm:block">
                 @{r.caller.username}
               </div>
             )}
@@ -72,24 +72,25 @@ export default function CallsList({ type }: { type: "audio" | "video" }) {
     {
       header: "Chat",
       cell: (r) => (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {r.chat && (
             <img
-              src={r.chat?.group_icon}
-              className="h-8 w-8 rounded-full"
+              src={r.chat?.group_icon || '/assets/Avatar.png'}
+              className="h-6 w-6 sm:h-8 sm:w-8 rounded-full object-cover"
               alt="avatar"
             />
           )}
-          <div>
-            <div className="text-table-text text-sm font-medium">
-              {r.chat?.group_name}
+          <div className="min-w-0">
+            <div className="text-table-text text-xs sm:text-sm font-medium truncate">
+              {r.chat?.group_name || 'N/A'}
             </div>
-            <div className="text-xs text-text-muted">
-              {r.chat?.chat_type} Chat
+            <div className="text-xs text-text-muted truncate hidden sm:block">
+              {r.chat?.chat_type || ''} Chat
             </div>
           </div>
         </div>
       ),
+      className: 'hidden md:table-cell',
     },
     {
       header: "Call Status",
@@ -97,12 +98,12 @@ export default function CallsList({ type }: { type: "audio" | "video" }) {
         <span
           className={
             r.call_status === "ended"
-              ? "text-green-500 border font-medium border-green-300 px-2 py-1 rounded-full text-xs"
+              ? "text-green-500 border font-medium border-green-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs"
               : r.call_status === "ringing"
-              ? "text-yellow-700 border font-medium font-bold border-yellow-500 px-2 py-1 rounded-full text-xs"
+              ? "text-yellow-700 border font-medium font-bold border-yellow-500 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs"
               : r.call_status === "missed"
-              ? "text-red-500 border font-medium font-bold border-red-500 px-2 py-1 rounded-full text-xs"
-              : "text-green-500 border font-medium border-green-300 px-2 py-1 rounded-full text-xs"
+              ? "text-red-500 border font-medium font-bold border-red-500 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs"
+              : "text-green-500 border font-medium border-green-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs"
           }
         >
           {r.call_status}
@@ -110,19 +111,36 @@ export default function CallsList({ type }: { type: "audio" | "video" }) {
       ),
     },
     {
-      header: "Call Duration(sec)",
+      header: "Duration(sec)",
       accessor: "call_duration",
+      className: 'hidden lg:table-cell',
       // sortable: true,
     },
     {
       header: "Created At",
-      cell: (r) =>
-        new Date(r.createdAt).toLocaleDateString(undefined, {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }),
+      cell: (r) => {
+        const date = new Date(r.createdAt);
+        return (
+          <div className="text-xs sm:text-sm">
+            <span className="hidden xl:inline">
+              {date.toLocaleDateString(undefined, {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </span>
+            <span className="xl:hidden">
+              {date.toLocaleDateString(undefined, {
+                year: "2-digit",
+                month: "short",
+                day: "numeric",
+              })}
+            </span>
+          </div>
+        );
+      },
       sortable: true,
+      className: 'hidden sm:table-cell',
     },
   ];
 
@@ -171,18 +189,20 @@ export default function CallsList({ type }: { type: "audio" | "video" }) {
   useEffect(() => {
     fetchAll();
   }, [type]);
+  const pageTitle = type === "audio" ? "Audio Call List" : "Video Call List";
+
   return (
-    <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-table-header-text">
-        User List
+    <div className="space-y-3 sm:space-y-4 p-3 sm:p-4 md:p-6">
+      <h1 className="text-lg sm:text-xl font-semibold text-table-header-text">
+        {pageTitle}
       </h1>
 
-      <div className="flex items-center justify-between ">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div className="mt-2">
           <Breadcrumb />
         </div>
-        <div className="flex items-center gap-2 relative w-full max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 font-extrabold text-text-muted" />
+        <div className="flex items-center gap-2 relative w-full sm:w-auto sm:max-w-md">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 font-extrabold text-text-muted" />
 
           <Input
             value={search}
@@ -190,12 +210,14 @@ export default function CallsList({ type }: { type: "audio" | "video" }) {
             onKeyDown={(e) => {
               if (e.key === "Enter") fetchAll();
             }}
-            placeholder="Search by name or number"
-            className="pl-9 bg-secondary/80 text-text-muted w-full min-w-[200px]"
+            placeholder="Search calls..."
+            className="pl-8 sm:pl-9 bg-secondary/80 text-text-muted w-full sm:min-w-[200px] text-sm sm:text-base"
           />
         </div>
       </div>
-      <DataTable data={rows} columns={columns} defaultPageSize={10} />
+      <div className="w-full overflow-x-auto">
+        <DataTable data={rows} columns={columns} defaultPageSize={10} />
+      </div>
     </div>
   );
 }

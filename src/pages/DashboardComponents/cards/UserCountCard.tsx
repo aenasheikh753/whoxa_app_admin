@@ -37,7 +37,7 @@ export default function UserCountCard({ className }: UserCountCardProps) {
                     value={0}
                     lastMonthValue={0}
                     percentageChange={0}
-                    gradient="bg-gradient-to-r from-cyan-500 to-cyan-400"
+                    gradient="bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700"
                 />
             </div>
         );

@@ -14,21 +14,21 @@ const StatsCard: React.FC<StatsCardProps> = ({
     value,
     lastMonthValue,
     percentageChange,
-    gradient = "bg-gradient-to-r from-violet-500 to-violet-400", // default
+    gradient = "bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700", // ConvoX Blue default
 }) => {
     const isPositive = percentageChange >= 0;
 
     return (
         <div
-            className={`${gradient} rounded-2xl shadow-default p-6 flex flex-col justify-between text-table-header-text`}
+            className={`${gradient} rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 flex flex-col justify-between border border-white/20 backdrop-blur-sm h-full min-h-[180px]`}
         >
             {/* Header */}
             <div className="flex justify-between items-start">
-                <h3 className="text-lg font-semibold text-white">{title}</h3>
+                <h3 className="text-lg font-semibold text-white drop-shadow-sm">{title}</h3>
                 <span
-                    className={`flex items-center text-sm font-medium px-3 py-1 rounded-xl ${isPositive
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
+                    className={`flex items-center text-sm font-medium px-3 py-1.5 rounded-xl shadow-sm ${isPositive
+                            ? "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300"
+                            : "bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300"
                         }`}
                 >
                     {percentageChange}%
@@ -41,10 +41,10 @@ const StatsCard: React.FC<StatsCardProps> = ({
             </div>
 
             {/* Value */}
-            <p className="text-4xl font-bold text-white mt-4">{value}</p>
+            <p className="text-4xl font-bold text-white mt-4 drop-shadow-md">{value}</p>
 
             {/* Comparison */}
-            <p className="text-white text-sm mt-2">
+            <p className="text-white/90 text-sm mt-2">
                 vs last month: <span className="font-bold">{lastMonthValue}</span>
             </p>
         </div>

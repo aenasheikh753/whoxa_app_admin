@@ -96,12 +96,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (credentials: any) => {
     try {
-      const { data } = await authService.login(credentials);
+      console.log('🔵 AuthProvider: Starting login...');
+      const response = await authService.login(credentials);
+      console.log('🔵 AuthProvider: Login response:', response);
+      
+      // Backend returns: { status: true, data: { token, ... }, message: "...", toast: true }
+      // authService.login() returns the full response object
+      if (!response || !response.data) {
+        console.error('❌ AuthProvider: Invalid response structure', response);
+        throw new Error('Invalid response from server');
+      }
+      
+      const { data } = response;
+      console.log('🔵 AuthProvider: Extracted data:', data);
+      console.log('🔵 AuthProvider: Token:', data.token);
+      console.log('🔵 AuthProvider: Full name:', data.full_name);
+      
+      if (!data.token) {
+        console.error('❌ AuthProvider: Token not found in response');
+        throw new Error('Token not found in response');
+      }
+      
       tokenManager.setTokens(data.token);
-      await queryClient.invalidateQueries({ queryKey: ['currentUser'] });
-      toast.success(`Welcome back, ${data.full_name}`);
+      console.log('🔵 AuthProvider: Token saved');
+      
+      // Set user data immediately in query cache so isAuthenticated becomes true
+      // This ensures AuthGuard allows navigation to /dashboard
+      queryClient.setQueryData<AdminLogin>(['currentUser'], response);
+      console.log('🔵 AuthProvider: User data set in cache immediately');
+      
+      // Also refetch in background to ensure data is fresh
+      queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+      console.log('🔵 AuthProvider: Queries invalidated for background refetch');
+      
+      toast.success(`Welcome back, ${data.full_name || 'Admin'}`);
+      console.log('🔵 AuthProvider: Toast shown');
+      
+      // Navigate immediately - user data is already in cache
       navigate('/dashboard');
+      console.log('🔵 AuthProvider: Navigation to /dashboard called');
     } catch (error: any) {
+      console.error('❌ AuthProvider: Login error:', error);
       toast.error(error.message || 'Login failed');
       throw error;
     }
